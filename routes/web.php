@@ -11,3 +11,5 @@ Route::get('/produtos', 'ProdutoController@lista');
 {
 	return '<h1>Listagem de Produtos</h1>';
 }
+
+Route::get('/produtos/mostra/{id}','ProdutosController@mostra');
