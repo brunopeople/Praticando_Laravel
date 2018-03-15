@@ -17,7 +17,7 @@ class ProdutoController extends Controller {
       $data = [];
 
       $data['produtos'] = $produtos;
-      return view('listagem',$data);
+      return view('listagem')->with('produtos',$produtos);
     }
 
     public function mostra()
@@ -30,6 +30,30 @@ class ProdutoController extends Controller {
     		return "Esse produto não existe";
     	}
 
-    	return view('detalhes')->width('p',$produto[0]);
+    	return view('produto/detalhes')->width('p',$produto);
+    }
+
+    public function novo()
+    {
+    	return view('formulario');
+    }
+
+    public function adiciona()
+    {
+    	$nome = Request::input('nome');
+    	$valor = Request::input('valor');
+    	$descricao = Request::input('descricao');
+    	$quantidade = Request::input('quantidade');
+
+    	DB::insert('insert into produtos values (null,?,?,?,?)',
+    		array($nome, $quantidade, $valor, $descricao));
+
+    	return redirect('/produtos')->withInput();
+    }
+
+    public function listaJson()
+    {
+    	$produtos = DB::select('select *from produtos');
+    	return response()->json($produtos);
     }
 }
